@@ -1,0 +1,6 @@
+{
+    "Text Color": {
+        "names":  ["Yellow","Orange","Red","Purple","Blue","Green"],
+        "values": ["\u001b[1;33m","\u001b[1;38;5;208m","\u001b[1;31m","\u001b[1;35m","\u001b[1;34m","\u001b[1;32m"]
+    }
+}
