@@ -39,7 +39,13 @@ class Menu {
                         $exit = true;
                     }
                 }
-                
+                //align
+                if (!$item->divider) {
+                    $modifier = $modifier . "   ";
+                }
+                else {
+                    $modifier = self::$highlight;
+                }
                 //draw item;
                 $div = ":";
                 $setting = $item->items[$item->index];
@@ -57,23 +63,39 @@ class Menu {
         echo "\e[0m\e[?25h\e[2J\e[H"; //reset cursor and clear terminal
     }
     public function moveMenu($key) {
+        $loopCheck = 0;
         if ($key == null) {
             return false;
         }
-
+        $count = count($this->items);
         if ($key == "s") {
             $this->index++;
-            if ($this->index >= count($this->items)) {
+            if ($this->index >= $count) {
                 $this->index = 0;
+            }
+            while ($this->items[$this->index]->divider) {
+                $this->index++;
+                if ($this->index >= $count) { //annoying that we need to do this but yeah
+                    $this->index = 0;
+                }
+                if ($loopCheck >= $count) break; //make sure if menu us all dividers IT SHOULD NEVER BE BUT BETTER SAFE THAN SORRY
+                $loopCheck++;
             }
             return true;
         }
         else if ($key == "w") {
             $this->index--;
             if ($this->index <= -1) {
-                $this->index = count($this->items)-1;
+                $this->index = $count-1;
             }
-
+            while ($this->items[$this->index]->divider) {
+                $this->index--;
+                if ($this->index <= -1) {
+                    $this->index = $count-1;
+                }
+                if ($loopCheck >= $count) break; //make sure if menu us all dividers IT SHOULD NEVER BE BUT BETTER SAFE THAN SORRY
+                $loopCheck++;
+            }
         }
     }
     public function render_start() {

@@ -2,7 +2,7 @@
 
 namespace SaveData;
 
-use MenuSystem\MenuItem;
+//this is a class that saves and loads the config data
 
 class Data {
     public static $gameSpeed = 100000;

@@ -23,40 +23,46 @@ class Input {
         }
     }
 
+    private static string|null $lastKey = null;
+
     public static function getKey(): ?string
     {
+        stream_set_blocking(STDIN, false);
+
         $read = [STDIN];
         $write = $except = null;
         $hasInput = stream_select($read, $write, $except, 0, 0);
-
-        if (!$hasInput) return null;
-
-        $char = fgetc(STDIN);
-
-        if (ord($char) === 27) { // ESC
-            //read all three inputs for arrow keys
-            if (stream_select($read, $write, $except, 0, 100000)) {
-                $next1 = fgetc(STDIN);
-                if (stream_select($read, $write, $except, 0, 100000)) {
-                    $next2 = fgetc(STDIN);
-                    $seq = $char . $next1 . $next2;
-                    return match ($seq) {
-                        "\e[A" => 'w',
-                        "\e[B" => 's',
-                        "\e[C" => 'd',
-                        "\e[D" => 'a',
-                        default => null
-                    };
-                }
-            }
+        if (!$hasInput) {
+            self::$lastKey = null;
             return null;
         }
 
-        $charLower = strtolower($char);
-        if (in_array($charLower, self::$watchedKeys)) {
-            return $charLower;
+        // Drain all available characters from input buffer
+        $buffer = '';
+        while (($char = fgetc(STDIN)) !== false) {
+            $buffer .= $char;
+            if (strlen($buffer) > 10) break; // safety
         }
 
-        return null;
+        // Get only the last sequence from buffer
+        $matches = [];
+        preg_match_all("/\e\[[ABCD]|./", $buffer, $matches); // match arrows or individual chars
+        $last = end($matches[0]) ?? null;
+        if (!$last) return null;
+
+        $key = match ($last) {
+            "\e[A" => 'w',
+            "\e[B" => 's',
+            "\e[C" => 'd',
+            "\e[D" => 'a',
+            default => strtolower($last)
+        };
+
+        if (!in_array($key, self::$watchedKeys ?? [])) {
+            return null;
+        }
+
+        self::$lastKey = $key;
+        return $key;
     }
 }

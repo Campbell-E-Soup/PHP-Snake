@@ -8,7 +8,10 @@ class MenuItem {
     public array $items;
     public string $name;
 
-    public function __construct($name,$items,$index = 0) {
+    public bool $saveable;
+    public bool $divider;
+
+    public function __construct($name,$items,$index = 0,$saveable = true,$divider = false) {
         $this->name = $name;
         
         $this->index = $index;
@@ -29,6 +32,9 @@ class MenuItem {
         else {
             $this->index = $index;
         }
+
+        $this->saveable = $saveable;
+        $this->divider = $divider;
     }
 
     public function move($key) {
@@ -41,7 +47,7 @@ class MenuItem {
             if ($this->index >= count($this->items)) {
                 $this->index = 0;
             }
-            if (count($this->items) > 1) Data::$save_data[$this->name] = $this->index;
+            if ($this->saveable) Data::$save_data[$this->name] = $this->index;
             return true;
         }
         else if ($key == "a") {
@@ -49,7 +55,7 @@ class MenuItem {
             if ($this->index <= -1) {
                 $this->index = count($this->items)-1;
             }
-            if (count($this->items) > 1) Data::$save_data[$this->name] = $this->index;
+            if ($this->saveable) Data::$save_data[$this->name] = $this->index;
         }
         return false;
     }
