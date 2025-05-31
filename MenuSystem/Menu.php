@@ -2,6 +2,7 @@
 
 namespace MenuSystem;
 
+use Game\GameArea;
 use Helpers\Input;
 use MenuSystem\MenuItem;
 use SaveData\Data;
@@ -60,6 +61,8 @@ class Menu {
         }
         //save
         Data::Save();
+        //load prefs into memory
+        GameArea::loadGameData();
         echo "\e[0m\e[?25h\e[2J\e[H"; //reset cursor and clear terminal
     }
     public function moveMenu($key) {
@@ -98,7 +101,7 @@ class Menu {
             }
         }
     }
-    public function render_start() {
+    public function renderStart() {
         echo "\e[2J\e[H\e[?25l"; //clear cursor and terminal
         $location = null;
         while ($location === null) {
@@ -132,7 +135,7 @@ class Menu {
     
     public static function loadMenuData() {
         //this loads the data that the menus use and load it to the menus statics
-        //"Text Color"
+        //"Border Style"
             self::$highlight = Data::GetData("Text Color",(int)Data::$save_data["Text Color"]);
     }
     

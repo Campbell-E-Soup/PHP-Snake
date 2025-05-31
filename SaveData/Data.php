@@ -2,6 +2,9 @@
 
 namespace SaveData;
 
+use MenuSystem\Menu;
+use Game\GameArea;
+
 //this is a class that saves and loads the config data
 
 class Data {
@@ -16,6 +19,10 @@ class Data {
     public static function Load() {
         self::$game_data = self::LoadJSONTo(__DIR__ . '/game-data.json');
         self::$save_data = self::LoadJSONTo(__DIR__ . '/save-data.json');
+
+        //load data where it needs to be
+        Menu::loadMenuData();
+        GameArea::loadGameData();
     }
 
     private static function LoadJSONTo($filePath) {

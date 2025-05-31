@@ -1,11 +1,12 @@
 {
     "WARNING": "!!-IF YOU ALTER ANYTHING BELOW THIS THE PROGRAM WILL POSSIBLY BREAK-!!",
-    "Game Area": 2,
+    "Game Size": 1,
     "Game Speed": 1,
     "Difficulty": 1,
-    "Text Color": 5,
-    "Border Color": 2,
+    "Text Color": 1,
+    "Border Color": 4,
     "Border Style": 1,
     "Config": 0,
-    "Exit": 0
+    "Exit": 0,
+    "Play": 0
 }
