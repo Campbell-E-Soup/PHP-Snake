@@ -4,21 +4,30 @@
         "values": ["\u001b[1;33m","\u001b[1;38;5;208m","\u001b[1;31m","\u001b[1;35m","\u001b[1;34m","\u001b[1;32m"]
     },
     "Border Style": {
-        "names" : ["Simple","Rounded","Double","Zero ASCII"],
+        "names" : ["Simple","Rounded","Double","Zero ASCII","Fill"],
         "values": [
-            ["┌","─","┐","│","┘","└"],
-            ["╭","─","╮","│","╯","╰"],
-            ["╔","═","╗","║","╝","╚"],
-            ["+","-","+","|","+","+"]
+            ["┌","──","┐","│","┘","└"],
+            ["╭","──","╮","│","╯","╰"],
+            ["╔","══","╗","║","╝","╚"],
+            ["+","--","+","|","+","+"],
+            ["██","██","██","██","██","██"]
         ]
     },
     "Border Color": {
         "names" : ["Yellow",    "Orange",          "Red",       "Purple",      "Blue",      "Green"],
         "values": ["\u001b[33m","\u001b[38;5;208m","\u001b[31m","\u001b[1;35m","\u001b[34m","\u001b[32m"]
     },
+    "Snake Color": {
+        "names" : ["Yellow",    "Orange",          "Red",       "Purple",      "Blue",      "Green"],
+        "values": ["\u001b[33m","\u001b[38;5;208m","\u001b[31m","\u001b[1;35m","\u001b[34m","\u001b[32m"]
+    },
+    "Pellet Color": {
+        "names" : ["Yellow",      "Orange",            "Red",         "Purple",      "Blue",        "Green"],
+        "values": ["\u001b[1;33m","\u001b[1;38;5;208m","\u001b[1;31m","\u001b[1;35m","\u001b[1;34m","\u001b[1;32m"]
+    },
     "Game Size": {
         "names" : ["Small", "Medium", "Large" ,"Extra Large"],
-        "values": [[10,20], [15,30] , [20,35] ,[20,40]]
+        "values": [[10,10], [15,15] , [20,20] ,[30,30]]
     },
     "Game Speed": {
         "names" : ["Slow", "Normal", "Fast"],

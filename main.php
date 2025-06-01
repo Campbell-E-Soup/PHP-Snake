@@ -5,6 +5,7 @@ require_once "MenuSystem/Menu.php";
 require_once "MenuSystem/MenuItem.php";
 require_once "SaveData/Data.php";
 require_once "Game/GameArea.php";
+require_once "Game/Snake.php";
 
 use Game\GameArea;
 use Helpers\Input;
@@ -27,6 +28,8 @@ $config = new Menu([
         new MenuItem("Text Color",null,-1),
         new MenuItem("Border Color",null,-1),
         new MenuItem("Border Style",null,-1),
+        new MenuItem("Snake Color",null,-1),
+        new MenuItem("Pellet Color",null,-1),
         //exit
         new MenuItem("Exit",[false],saveable: false)
     ],
@@ -34,7 +37,7 @@ $config = new Menu([
 );
 $game = new GameArea();
 $gameStates = [$game,$config,null]; //null exits program
-    $menu = new Menu([new MenuItem("Play",[]),new MenuItem("Config",items: []),new MenuItem("Exit",[])]);
+    $menu = new Menu([new MenuItem("Play",[],saveable:false),new MenuItem("Config",items: [],saveable:false),new MenuItem("Exit",[],saveable:false)]);
     while (true) {
         $location = $menu->renderStart();
         if ($location === null) break;
@@ -43,10 +46,14 @@ $gameStates = [$game,$config,null]; //null exits program
             break; //something has gone wrong, or you want to exit
         }
         else {
-            $display->render();
-            //update and refresh game (either game is done or settings may have changed)
-            $game = new GameArea();
-            $gameStates[0] = $game;
+            $restart = true;
+            while ($restart) {
+                $restart = $display->render();
+                //update and refresh game (either game is done or settings may have changed)
+                $game = new GameArea();
+                $gameStates[0] = $game;
+                $display = $game; //only should matter when restarting
+            }
         }
     }
 

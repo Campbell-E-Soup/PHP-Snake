@@ -64,6 +64,7 @@ class Menu {
         //load prefs into memory
         GameArea::loadGameData();
         echo "\e[0m\e[?25h\e[2J\e[H"; //reset cursor and clear terminal
+        return false;
     }
     public function moveMenu($key) {
         $loopCheck = 0;
@@ -135,7 +136,7 @@ class Menu {
     
     public static function loadMenuData() {
         //this loads the data that the menus use and load it to the menus statics
-        //"Border Style"
+        //"Text Color"
             self::$highlight = Data::GetData("Text Color",(int)Data::$save_data["Text Color"]);
     }
     
