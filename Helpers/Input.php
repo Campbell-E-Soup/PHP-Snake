@@ -46,7 +46,7 @@ class Input {
 
         // Get only the last sequence from buffer
         $matches = [];
-        preg_match_all("/\e\[[ABCD]|./", $buffer, $matches); // match arrows or individual chars
+        preg_match_all("/\e\[[ABCD]|\r|\n|./", $buffer, $matches); // match arrows or individual chars
         $last = end($matches[0]) ?? null;
         if (!$last) return null;
 
@@ -55,6 +55,7 @@ class Input {
             "\e[B" => 's',
             "\e[C" => 'd',
             "\e[D" => 'a',
+            "\n","\r"=> 'd',
             default => strtolower($last)
         };
 

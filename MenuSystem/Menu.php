@@ -33,7 +33,7 @@ class Menu {
             foreach ($this->items as $i => $item) {
                 $modifier = " "; //as we over right this assures all lines are uniform no mater if selected :)
                 if ($i == $this->index) {
-                    $modifier = self::$highlight . ">";
+                    $modifier = self::$highlight . "█";
                     $clicked = $item->move($key);
                     self::loadMenuData();
                     if ($clicked && count($item->items) <= 1) {
@@ -107,12 +107,13 @@ class Menu {
         $location = null;
         while ($location === null) {
             echo "\e[H";//move cursor to top
+            Menu::drawLogo();
             $key = Input::getKey();
             $this->moveMenu($key);
             foreach ($this->items as $i => $item) {
                 $modifier = " "; //this assures all lines are uniform no mater if selected
                 if ($i == $this->index) {
-                    $modifier = self::$highlight . ">";
+                    $modifier = self::$highlight . "█";
                     if ($item->move($key)) {
                         $location = $i;
                     }
@@ -140,4 +141,37 @@ class Menu {
             self::$highlight = Data::GetData("Text Color",(int)Data::$save_data["Text Color"]);
     }
     
+    public static function createSettings() {
+        return new Menu([
+                //game settings
+                new MenuItem("[Game Settings]",[false],saveable: false,divider: true), //divider
+                new MenuItem("Difficulty",null,-1),
+                new MenuItem("Game Speed",null,-1),
+                new MenuItem("Game Size" ,null,-1),
+                //visual settings
+                new MenuItem("[Visuals]",[false],saveable: false,divider: true), //divider
+                new MenuItem("Text Color",null,-1),
+                new MenuItem("Border Color",null,-1),
+                new MenuItem("Border Style",null,-1),
+                new MenuItem("Snake Color",null,-1),
+                new MenuItem("Pellet Color",null,-1),
+                //exit
+                new MenuItem("Exit",[false],saveable: false)
+            ],
+            1 //avoid settings divider
+        );
+    }
+
+    public static function drawLogo() {
+        echo Menu::$highlight;
+        echo " ╱███████  ╱██   ╱██ ╱███████         ╱██████  ╱██   ╱██  ╱██████  ╱██   ╱██ ╱████████\n";
+        echo "| ██__  ██| ██  | ██| ██__  ██       ╱██__  ██| ███ | ██ ╱██__  ██| ██  ╱██╱| ██_____╱\n";
+        echo "| ██  ╲ ██| ██  | ██| ██  ╲ ██      | ██  ╲__╱| ████| ██| ██  ╲ ██| ██ ╱██╱ | ██      \n";
+        echo "| ███████╱| ████████| ███████╱      |  ██████ | ██ ██ ██| ████████| █████╱  | █████   \n";
+        echo "| ██____╱ | ██__  ██| ██____╱        ╲____  ██| ██  ████| ██__  ██| ██  ██  | ██__╱   \n";
+        echo "| ██      | ██  | ██| ██             ╱██  ╲ ██| ██╲  ███| ██  | ██| ██╲  ██ | ██   \n";
+        echo "| ██      | ██  | ██| ██            |  ██████╱| ██ ╲  ██| ██  | ██| ██ ╲  ██| ████████\n";
+        echo "|__╱      |__╱  |__╱|__╱             ╲______╱ |__╱  ╲__╱|__╱  |__╱|__╱  ╲__╱|________╱\n\n";
+        echo "\033[0m";
+    }
 }

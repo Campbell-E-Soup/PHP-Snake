@@ -17,24 +17,7 @@ use SaveData\Data;
 Input::init();
 Data::Load();
 //game page config
-$config = new Menu([
-        //game settings
-        new MenuItem("[Game Settings]",[false],saveable: false,divider: true), //divider
-        new MenuItem("Difficulty",null,-1),
-        new MenuItem("Game Speed",null,-1),
-        new MenuItem("Game Size" ,null,-1),
-        //visual settings
-        new MenuItem("[Visuals]",[false],saveable: false,divider: true), //divider
-        new MenuItem("Text Color",null,-1),
-        new MenuItem("Border Color",null,-1),
-        new MenuItem("Border Style",null,-1),
-        new MenuItem("Snake Color",null,-1),
-        new MenuItem("Pellet Color",null,-1),
-        //exit
-        new MenuItem("Exit",[false],saveable: false)
-    ],
-    1 //avoid settings divider
-);
+$config = Menu::createSettings();
 $game = new GameArea();
 $gameStates = [$game,$config,null]; //null exits program
     $menu = new Menu([new MenuItem("Play",[],saveable:false),new MenuItem("Config",items: [],saveable:false),new MenuItem("Exit",[],saveable:false)]);

@@ -4,7 +4,7 @@ namespace Game;
 
 class Snake {
     public $body;
-    public string $direction;
+    public ?string $direction;
     public bool $grow = false;
 
     public function __construct($width,$height) {
@@ -12,7 +12,7 @@ class Snake {
             ['x' => (int)floor($width/2),
             'y' => (int)floor($height/2)]
         ];
-        $this->direction = "w";
+        $this->direction = null;
     }
 
     public function drawSnake(array &$grid): bool {
@@ -24,6 +24,7 @@ class Snake {
     }
 
     public function move($grid) {
+        if ($this->direction === null) return false;
         $dir = $this->direction;
         $xOffset = (int)($dir == "d") - (int)($dir == "a");
         $yOffset = (int)($dir == "s") - (int)($dir == "w");

@@ -1,11 +1,11 @@
 {
     "WARNING": "!!-IF YOU ALTER ANYTHING BELOW THIS THE PROGRAM WILL POSSIBLY BREAK-!!",
-    "Game Size": 2,
-    "Game Speed": 0,
+    "Game Size": 1,
+    "Game Speed": 1,
     "Difficulty": 1,
-    "Text Color": 0,
+    "Text Color": 1,
     "Border Color": 4,
-    "Border Style": 4,
+    "Border Style": 1,
     "Snake Color": 5,
     "Pellet Color": 2
 }

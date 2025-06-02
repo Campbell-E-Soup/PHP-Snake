@@ -16,6 +16,7 @@ class GameArea {
     public static string $pelletColor;
     public static array $gameSize;
     public static string $highlight;
+    public static float $difficulty;
     public Snake $snake;
     public function __construct() {
         //initilize game grid
@@ -39,6 +40,8 @@ class GameArea {
     }
 
     public function render() {
+        $speed = Data::$gameSpeed;
+        self::loadGameData();
         echo "\e[2J\e[H\e[?25l"; //clear cursor and terminal
             $width = count($this->gameGrid[0]);
             $height = count($this->gameGrid);
@@ -50,10 +53,14 @@ class GameArea {
                     $this->snake->updateDir($key);
                     $gameover = $this->snake->move($this->gameGrid);
                     if ($this->snake->drawSnake($this->gameGrid)) {
-                        $score++;
+                        $score+= (1 + self::$difficulty);
+                        $speed -= (int)(2000*self::$difficulty);
+                        if ($speed <= 50000) {
+                            $speed = 50000;
+                        }
                     }
                     if ($gameover) break;
-                echo "\e[H";//move cursor to top
+                echo "\e[H";//move cursor to topq
                 echo self::$highlight . "SCORE $score\n\033[0m";
                 for ($y = 0; $y < $height; $y++) {
                     for ($x = 0; $x < $width; $x++) {
@@ -82,9 +89,9 @@ class GameArea {
                     return false;
                 }
                 $this->placeFood($this->snake->grow);
-                usleep(Data::$gameSpeed);
+                usleep($speed);
             }
-            echo "\033[1;31m\nGame Over! Press 'q' to quit or press 'wasd' to restart";
+            echo "\033[1;31m\nGame Over!\nPress 'q' to quit or press 'enter' to restart";
             $restart = false;
             while (true) {
                 $key = Input::getKey();
@@ -97,6 +104,7 @@ class GameArea {
                 }
                 usleep(Data::$gameSpeed);
             }
+            Data::Load();
         echo "\e[0m\e[?25h\e[2J\e[H";
         return $restart;
     }
@@ -114,6 +122,8 @@ class GameArea {
             self::$pelletColor = Data::GetData("Pellet Color",(int)Data::$save_data["Pellet Color"]);
         //"Text Color"
             self::$highlight = Data::GetData("Text Color",(int)Data::$save_data["Text Color"]);
+        //"Difficulty"
+            self::$difficulty = (float)Data::GetData("Difficulty",(int)Data::$save_data["Difficulty"]);
     }
 
     public static function borderSelect($x, $y, $width, $height) {
@@ -129,10 +139,12 @@ class GameArea {
     public function placeFood($bool = true) {
         if (!$bool) return;
         //place food at random coord check that it is empty if not keep trying
-        $width = count($this->gameGrid[0])-3;
-        $height = count($this->gameGrid)-3;
-        $rX = random_int(2,$width);
-        $rY = random_int(2,$height);
+        $bounds = 3;
+        if (self::$difficulty > 1) $bounds = 2;
+        $width = count($this->gameGrid[0])-$bounds;
+        $height = count($this->gameGrid)-$bounds;
+        $rX = random_int($bounds-1,$width);
+        $rY = random_int($bounds-1,$height);
         $limit = $width * $height/2;
         while ($this->gameGrid[$rY][$rX] !== "  ") {
             $rX = random_int(1,$width);
